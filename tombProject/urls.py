@@ -15,7 +15,10 @@ Including another URLconf
 """
 from django.conf.urls import url
 from django.contrib import admin
+from tombApp import views
 
 urlpatterns = [
-    url(r'^admin/', admin.site.urls),
+    #url(r'^admin/', admin.site.urls),
+    url(r'^$', views.home_page, name='home')
+    #redirects 127.0.0.1:8000 to a particular page I create in views.py
 ]
