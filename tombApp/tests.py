@@ -16,10 +16,9 @@ class HomePageTest(TestCase):
         html = response.content.decode('utf8') #convert to human readable HTML
         self.assertIn('<h1>Welcome to the Tomb of Horror</h1>', html, 'H1 contents fail')
 
-#check for player name
+#check for smoke test
+class SmokeTest(TestCase):
+    def test_bad_maths(self):
+        self.assertEqual(1 + 1, 3)
     
 
-#check for health status
-
-
-#check for ...
