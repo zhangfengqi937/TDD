@@ -5,3 +5,4 @@ from django.http import HttpResponse
 def home_page(request):
     html = "<h1>Welcome to the Tomb of Horror</h1>"
     return HttpResponse(html)
+
