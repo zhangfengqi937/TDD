@@ -3,6 +3,5 @@ from django.http import HttpResponse
 
 # Create your views here.
 def home_page(request):
-    html = "<h1>Welcome to the Tomb of Horror</h1>"
-    return HttpResponse(html)
+    return HttpResponse('<html><title>To-Do lists</title></html>')
 
