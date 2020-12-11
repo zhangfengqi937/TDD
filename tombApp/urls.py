@@ -13,13 +13,12 @@ Including another URLconf
     1. Import the include() function: from django.conf.urls import url, include
     2. Add a URL to urlpatterns:  url(r'^blog/', include('blog.urls'))
 """
-from django.conf.urls import include, url
-from tombApp import views as list_views
-from tombApp import urls as list_urls
+from django.conf.urls import url
+from tombApp import views
 
 urlpatterns = [
-    #url(r'^admin/', admin.site.urls),
-    #redirects 127.0.0.1:8000 to a particular page I create in views.py
-    url(r'^$', list_views.home_page, name='home'),
-    url(r'^lists/', include(list_urls)),
+    url(r'^new$', views.new_list, name='new_list'),
+    url(r'^(\d+)/$', views.view_list, name='view_list'),
+    url(r'^(\d+)/add_item$', views.add_item, name='add_item'),
 ]
+
