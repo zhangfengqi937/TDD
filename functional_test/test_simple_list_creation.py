@@ -1,42 +1,14 @@
 from selenium import webdriver
 from selenium.webdriver.common.keys import Keys
-from django.contrib.staticfiles.testing import StaticLiveServerTestCase
+from .base import FunctionalTest
 from selenium.common.exceptions import WebDriverException
 import time
 import unittest
 #make sure website and server are working
 #big picture testing
 
-MAX_WAIT = 10
-class NewVisitorTest(StaticLiveServerTestCase):
-    def setUp(self):
-        #set headless
-        ChromeOptions = webdriver.ChromeOptions()
-        ChromeOptions.headless = True
 
-        self.browser = webdriver.Chrome(executable_path='C:/Users/zhang/OneDrive/PTC/User Testing/Week 3 Selenium/Selenium/chromedriver_win32/chromedriver.exe', options=ChromeOptions)
-        self.browser.get("http://127.0.0.1:8000/")
-
-    def tearDown(self):
-        self.browser.quit()
-
-    def wait_for_row_in_list_table(self, row_text):
-        start_time = time.time()
-        while True:
-            try:
-                table = self.browser.find_element_by_id('id_list_table')
-                rows = self.browser.find_elements_by_tag_name('tr')
-                self.assertIn(row_text, [row.text for row in rows])
-                return
-            except(AssertionError, WebDriverException) as e:
-                if time.time() - start_time > MAX_WAIT:
-                    raise e
-                time.sleep(0.5)
-
-    #@unittest.SkipTest #ignore a test
-    @unittest.SkipTest
-    def test_title(self):
-        self.assertIn('Django', self.browser.title, 'Wrong Title')
+class NewVisitorTest(FunctionalTest):
 
     @unittest.SkipTest
     def test_can_start_a_list_for_one_user(self):
@@ -124,30 +96,3 @@ class NewVisitorTest(StaticLiveServerTestCase):
         self.assertIn('Buy milk', page_text)
 
         ##Satisfied, he goes back to sleep
-
-#Start of Chapter 8
-
-    def test_layout_and_styling(self):
-        # Edith goes to the home page
-        self.browser.get(self.live_server_url)
-        self.browser.set_window_size(1024, 768)
-
-        # She notices the input box is nicely centered
-        inputbox = self.browser.find_element_by_id('id_new_item')
-        self.assertAlmostEqual(
-            inputbox.location['x'] + inputbox.size['width'] / 2,
-            512,
-            delta=5
-        )
-
-        # She starts a new list and sees the input is nicely
-        # centered there too
-        inputbox.send_keys('testing')
-        inputbox.send_keys(Keys.ENTER)
-        self.wait_for_row_in_list_table('1: testing')
-        inputbox = self.browser.find_element_by_id('id_new_item')
-        self.assertAlmostEqual(
-            inputbox.location['x'] + inputbox.size['width'] / 2,
-            512,
-            delta=5
-        )
