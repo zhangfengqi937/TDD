@@ -1,12 +1,12 @@
 from django.test import TestCase
 from django.urls import resolve
 from django.http import HttpRequest
-
 from django.template.loader import render_to_string
+from django.utils.html import escape
 
 from tombApp.views import home_page 
 from tombApp.models import Item, List
-from django.utils.html import escape
+from tombApp.forms import ItemForm
 
 import unittest
 # Create your tests here.
@@ -56,6 +56,10 @@ class HomePageTestTxt(TestCase):
     def test_uses_home_template(self):
         response = self.client.get('/')
         self.assertTemplateUsed(response, 'home.html')
+    
+    def test_home_page_uses_item_form(self):
+        response = self.client.get('/')
+        self.assertIsInstance(response.context['form'], ItemForm)
 
 class ListAndItemModelsTest(TestCase):
     def test_saving_and_retrieving_items(self):
