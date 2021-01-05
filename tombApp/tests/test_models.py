@@ -7,6 +7,7 @@ from django.template.loader import render_to_string
 from tombApp.views import home_page 
 from tombApp.models import Item, List
 
+from django.core.exceptions import ValidationError
 import unittest
 
 class ListAndItemModelsTest(TestCase):
@@ -106,3 +107,10 @@ class NewItemTest(TestCase):
         )
 
         self.assertRedirects(response, f'/lists/{correct_list.id}/')
+
+    def test_cannot_save_empty_list_items(self):
+        list_ = List.objects.create()
+        item = Item(list = list_, text = '')
+        with self.assertRaises(ValidationError):
+            item.save()
+            item.full_clean()
