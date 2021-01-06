@@ -1,5 +1,6 @@
 from django.test import TestCase
-from tombApp.forms import ItemForm
+from tombApp.models import Item, List
+from tombApp.forms import EMPTY_ITEM_ERROR, ItemForm
 
 class ItemFormTest(TestCase):
     def test_form_renders_item_text_input(self):
@@ -18,3 +19,11 @@ class ItemFormTest(TestCase):
             form.errors['text'],
             ["You can't have an empty list item"]
         )
+
+    def test_form_save_handles_saving_to_a_list(self):
+        list_ = List.objects.create()
+        form = ItemForm(data={'text': 'do me'})
+        new_item = form.save(for_list=list_)
+        self.assertEqual(new_item, Item.objects.first())
+        self.assertEqual(new_item.text, 'do me')
+        self.assertEqual(new_item.list, list_)
