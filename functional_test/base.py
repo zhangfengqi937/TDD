@@ -4,6 +4,8 @@ from django.contrib.staticfiles.testing import StaticLiveServerTestCase
 from selenium.common.exceptions import WebDriverException
 import time
 import unittest
+from .server_tools import reset_database
+import sys
 #make sure website and server are working
 #big picture testing
 
@@ -14,11 +16,25 @@ def wait(fn):
         return fn()
 
 class FunctionalTest(StaticLiveServerTestCase):
+
+    @classmethod
+    def setUpClass(cls):
+        for arg in sys.argv:
+            if 'liveserver' in arg:
+                cls.server_host = arg.split('=')[1]
+                cls.server_url = 'http://' + cls.server_host
+                cls.against_staging = True
+                return
+        super().setUpClass()
+        cls.against_staging = False
+        cls.server_url = cls.live_server_url
+
     def setUp(self):
         #set headless
         ChromeOptions = webdriver.ChromeOptions()
         ChromeOptions.headless = True
 
+        
         self.browser = webdriver.Chrome(executable_path='C:/Users/zhang/OneDrive/PTC/User Testing/Week 3 Selenium/Selenium/chromedriver_win32/chromedriver.exe', options=ChromeOptions)
         self.browser.get("http://127.0.0.1:8000/")
 
