@@ -3,7 +3,11 @@ from django.contrib.auth.models import (
     AbstractBaseUser, BaseUserManager, PermissionsMixin
 )
 import uuid
+from django.contrib import auth
 # Create your models here.
+
+auth.signals.user_logged_in.disconnect(auth.models.update_last_login)
+
 class User(models.Model):
     email = models.EmailField(primary_key=True)
 
